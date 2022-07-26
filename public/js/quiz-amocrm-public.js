@@ -1,32 +1,32 @@
+import("./form-1/inpage.js");
+import("./form-1/popup.js");
+
 (function( $ ) {
 	'use strict';
 
-	/**
-	 * All of the code for your public-facing JavaScript source
-	 * should reside in this file.
-	 *
-	 * Note: It has been assumed you will write jQuery code here, so the
-	 * $ function reference has been prepared for usage within the scope
-	 * of this function.
-	 *
-	 * This enables you to define handlers, for when the DOM is ready:
-	 *
-	 * $(function() {
-	 *
-	 * });
-	 *
-	 * When the window is loaded:
-	 *
-	 * $( window ).load(function() {
-	 *
-	 * });
-	 *
-	 * ...and/or other possibilities.
-	 *
-	 * Ideally, it is not considered best practise to attach more than a
-	 * single DOM-ready or window-load handler for a particular page.
-	 * Although scripts in the WordPress core, Plugins and Themes may be
-	 * practising this, we should strive to set a better example in our own work.
-	 */
+	$(document).ready(function () {
+
+		$.mask.definitions['X'] = "[9]";
+		$("[data-type='phone']").mask("+7 (X99) 999-99-99");
+
+		$(".handler_amocrm").append("<input name='handler-amocrm' hidden value='true' />");
+
+		$(".handler_amocrm").on("submit", function () {
+			let data = $(this).serializeArray();
+			data[2]['value'] = "handler_form_feedback";
+
+			$.ajax({
+				url: window.wp_ajax["ajax_url"],
+				method: "post",
+				data: data,
+				success(data) {
+					console.log(data);
+				}
+			})
+		});
+
+		$(".handler_amocrm").find("[placeholder='Номер телефона']").mask("+7 (X99) 999-99-99");
+
+	});
 
 })( jQuery );

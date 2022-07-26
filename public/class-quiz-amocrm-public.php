@@ -488,4 +488,31 @@ class Quiz_Amocrm_Public
         wp_die();
 
     }
+
+    /**
+     * [v1] Display Popup Form
+     */
+    function render_form_v1()
+    {
+        ob_start();
+        require_once(plugin_dir_path(__FILE__) . 'partials/form-1/quiz-amocrm-popup-form-display.php');
+        $html = ob_get_contents();
+        ob_end_clean();
+
+        return $html;
+    }
+
+    /**
+     * [v1] Display In Page Form
+     */
+    function render_form_in_page_v1()
+    {
+        ob_start();
+        require_once(plugin_dir_path(__FILE__) . 'partials/form-1/quiz-amocrm-form-inpage-display.php');
+        $html = ob_get_contents();
+        $html = do_shortcode($html);
+
+        ob_end_clean();
+        return $html;
+    }
 }

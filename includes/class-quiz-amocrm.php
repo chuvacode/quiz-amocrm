@@ -182,6 +182,20 @@ class Quiz_Amocrm {
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 
+        // Auth
+        $this->loader->add_action('init', $plugin_public, 'auth');
+
+        // AJAX
+        $this->loader->add_action('wp_ajax_send_form_quiz_amacrm', $plugin_public, 'handler_form');
+        $this->loader->add_action('wp_ajax_nopriv_send_form_quiz_amacrm', $plugin_public, 'handler_form');
+
+        $this->loader->add_action('wp_ajax_handler_form_feedback', $plugin_public, 'handler_form_feedback');
+        $this->loader->add_action('wp_ajax_nopriv_handler_form_feedback', $plugin_public, 'handler_form_feedback');
+
+        // ShortCodes
+        $this->loader->add_shortcode( 'quiz-form-amocrm', $plugin_public, 'render_form_1' );
+        $this->loader->add_shortcode( 'quiz-form-inpage-amocrm', $plugin_public, 'render_form_inpage_1' );
+
 	}
 
 	/**
