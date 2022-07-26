@@ -43,9 +43,9 @@ class Quiz_Amocrm {
 	 *
 	 * @since    1.0.0
 	 * @access   protected
-	 * @var      string    $quiz_amocrm    The string used to uniquely identify this plugin.
+	 * @var      string    $plugin_name    The string used to uniquely identify this plugin.
 	 */
-	protected $quiz_amocrm;
+	protected $plugin_name;
 
 	/**
 	 * The current version of the plugin.
@@ -71,7 +71,7 @@ class Quiz_Amocrm {
 		} else {
 			$this->version = '1.0.0';
 		}
-		$this->quiz_amocrm = 'quiz-amocrm';
+		$this->plugin_name = 'quiz-amocrm';
 
 		$this->load_dependencies();
 		$this->set_locale();
@@ -156,6 +156,16 @@ class Quiz_Amocrm {
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 
+        // Add menu item
+        $this->loader->add_action( 'admin_menu', $plugin_admin, 'add_plugin_admin_menu' );
+
+        // Add Settings link to the plugin
+        $plugin_basename = plugin_basename( plugin_dir_path( __DIR__ ) . $this->plugin_name . '.php' );
+        $this->loader->add_filter( 'plugin_action_links_' . $plugin_basename, $plugin_admin, 'add_action_links' );
+
+        // Save/Update our plugin options
+        $this->loader->add_action('admin_init', $plugin_admin, 'options_update');
+
 	}
 
 	/**
@@ -171,6 +181,26 @@ class Quiz_Amocrm {
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
+
+        // Auth
+        $this->loader->add_action('init', $plugin_public, 'auth');
+
+        // AJAX
+        $this->loader->add_action('wp_ajax_send_form_quiz_amacrm', $plugin_public, 'handler_quiz_form');
+        $this->loader->add_action('wp_ajax_nopriv_send_form_quiz_amacrm', $plugin_public, 'handler_quiz_form');
+
+        $this->loader->add_action('wp_ajax_handler_form_feedback', $plugin_public, 'handler_form_feedback');
+        $this->loader->add_action('wp_ajax_nopriv_handler_form_feedback', $plugin_public, 'handler_form_feedback');
+
+        // ShortCodes
+        $this->loader->add_shortcode( 'quiz-form-amocrm', $plugin_public, 'render_popup_form_v1' );
+        $this->loader->add_shortcode( 'quiz-form-inpage-amocrm', $plugin_public, 'render_inpage_form_v1' );
+
+        $this->loader->add_shortcode( 'quiz-form-amocrm-extended', $plugin_public, 'render_popup_form_v2' );
+        $this->loader->add_shortcode( 'quiz-form-inpage-amocrm-extended', $plugin_public, 'render_inpage_form_v2' );
+
+        $this->loader->add_shortcode( 'quiz-form-amocrm-v3', $plugin_public, 'render_popup_form_v3' );
+        $this->loader->add_shortcode( 'quiz-form-inpage-amocrm-v3', $plugin_public, 'render_inpage_form_v3' );
 
 	}
 
@@ -191,7 +221,7 @@ class Quiz_Amocrm {
 	 * @return    string    The name of the plugin.
 	 */
 	public function get_quiz_amocrm() {
-		return $this->quiz_amocrm;
+		return $this->plugin_name;
 	}
 
 	/**

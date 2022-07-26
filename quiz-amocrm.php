@@ -64,6 +64,12 @@ register_deactivation_hook( __FILE__, 'deactivate_quiz_amocrm' );
 require plugin_dir_path( __FILE__ ) . 'includes/class-quiz-amocrm.php';
 
 /**
+ * The core plugin class that is used to define internationalization,
+ * admin-specific hooks, and public-facing site hooks.
+ */
+require_once (plugin_dir_path(__FILE__) . '/vendor/autoload.php');
+
+/**
  * Begins execution of the plugin.
  *
  * Since everything within the plugin is registered via hooks,
