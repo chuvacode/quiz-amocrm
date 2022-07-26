@@ -79,15 +79,11 @@ class Quiz_Amocrm_Public
 
         if ($this->locale_mode) return;
 
-        try {
-            if ($clientId != "" && $clientSecret != "" && $redirectUri != "") {
-                $this->apiClient = new \AmoCRM\Client\AmoCRMApiClient($clientId, $clientSecret, $redirectUri);
-            }
-        } catch (\Throwable $e) {
-            wp_die($e);
+        if ($clientId != "" && $clientSecret != "" && $redirectUri != "") {
+            $this->apiClient = new \AmoCRM\Client\AmoCRMApiClient($clientId, $clientSecret, $redirectUri);
+        } else {
+            return;
         }
-
-
 
         $this->access_token = $this->getAccessToken();
 
@@ -116,8 +112,8 @@ class Quiz_Amocrm_Public
                 );
 
             } catch (\Throwable $e) {
-                /*var_dump("Проблемы при обновлении токена AMOCRM");
-                var_dump($e);*/
+                // var_dump("Проблемы при обновлении токена AMOCRM");
+                // var_dump($e);
             }
         }
     }
