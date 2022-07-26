@@ -258,7 +258,7 @@ class Quiz_Amocrm_Public
     }
 
     /**
-     * Handler send form
+     * Handler quiz form
      */
     function handler_form()
     {
@@ -346,6 +346,123 @@ class Quiz_Amocrm_Public
             }
             $text_sms .= "\n";
         }
+
+        // Create NotesCollection
+        $notesCollection = new NotesCollection();
+
+        // Create Note
+        $commonNote = new CommonNote();
+        $commonNote->setEntityId($lead->getId())
+            ->setText($text_sms);
+        $notesCollection->add($commonNote);
+
+        // Push NotesCollection
+        try {
+            $leadNotesService = $this->apiClient->notes(EntityTypesInterface::LEADS);
+            $notesCollection = $leadNotesService->add($notesCollection);
+        } catch (AmoCRMApiException $e) {
+            // print_r($e);
+            wp_send_json_error("Ошибка при добавлении записки к лиду");
+            wp_die();
+        }
+
+        // Everything success
+        wp_send_json_success();
+        wp_die();
+
+    }
+
+    /**
+     * Handler feedback form
+     */
+    function handler_form_feedback()
+    {
+
+        if ($this->locale_mode) {
+            wp_send_json_success();
+            wp_die();
+        }
+
+        $_POST["firstname"] = $_POST["us_form_1_text_1"];
+        $_POST["phone"] = $_POST["us_form_1_text_2"];
+
+        if (!(isset($this->access_token) && isset($this->apiClient))) {
+            wp_send_json_error();
+            wp_die();
+        }
+
+        if ($_POST["firstname"] == "" or $_POST["phone"] == "" or $_POST["handler-amocrm"] != "true") {
+            wp_send_json_error();
+            wp_die();
+        }
+
+        // Getting Access Token
+        $this->apiClient->setAccessToken($this->access_token)
+            ->setAccountBaseDomain($this->access_token->getValues()['baseDomain'])
+            ->onAccessTokenRefresh(
+                function (AccessTokenInterface $accessToken, $baseDomain) {
+                    $this->saveToken(
+                        [
+                            'accessToken' => $accessToken->getToken(),
+                            'refreshToken' => $accessToken->getRefreshToken(),
+                            'expires' => $accessToken->getExpires(),
+                            'baseDomain' => $baseDomain,
+                        ]
+                    );
+                }
+            );
+
+        // Create contact
+        $contact = new ContactModel();
+        $contact->setName($_POST["firstname"]);
+        $customFields = new CustomFieldsValuesCollection();
+        $phoneField = (new MultitextCustomFieldValuesModel())->setFieldCode('PHONE');
+        $customFields->add($phoneField);
+
+        // Set a mobile number
+        $phoneField->setValues(
+            (new MultitextCustomFieldValueCollection())
+                ->add(
+                    (new MultitextCustomFieldValueModel())
+                        ->setEnum('WORKDD')
+                        ->setValue($_POST["phone"])
+                )
+        );
+        $contact->setCustomFieldsValues($customFields);
+
+        // Push contact
+        try {
+            $contactModel = $this->apiClient->contacts()->addOne($contact);
+        } catch (AmoCRMApiException $e) {
+            print_r($e);
+//            wp_send_json_error("Ошибка при сохранении контакта");
+            wp_die();
+        }
+
+        // Getting leads controller
+        $leadsService = $this->apiClient->leads();
+
+        // Create lead
+        $lead = new LeadModel();
+        $lead->setName('Заказать обратный звонок');
+        $lead->setContacts(
+            (new ContactsCollection())
+                ->add($contactModel)
+        );
+
+        // Push lead
+        try {
+            $lead = $leadsService->addOne($lead);
+        } catch (AmoCRMApiException $e) {
+//            print_r($e);
+            wp_send_json_error("Ошибка при создании лида");
+            wp_die();
+        }
+
+        // Create message
+        $text_sms = "";
+        $text_sms .= "Имя: " . $_POST['firstname'] . " \n\n";
+        $text_sms .= "Телефон: " . $_POST['phone'] . " \n\n";
 
         // Create NotesCollection
         $notesCollection = new NotesCollection();
