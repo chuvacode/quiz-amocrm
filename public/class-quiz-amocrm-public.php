@@ -19,6 +19,26 @@
  * @subpackage Quiz_Amocrm/public
  * @author     Alexey Chuvakov
  */
+
+use AmoCRM\Collections\ContactsCollection;
+use AmoCRM\Collections\CustomFieldsValuesCollection;
+use AmoCRM\Collections\NotesCollection;
+use AmoCRM\Exceptions\AmoCRMApiException;
+use AmoCRM\Helpers\EntityTypesInterface;
+use AmoCRM\Models\ContactModel;
+use AmoCRM\Models\CustomFieldsValues\MultitextCustomFieldValuesModel;
+use AmoCRM\Models\CustomFieldsValues\TextCustomFieldValuesModel;
+use AmoCRM\Models\CustomFieldsValues\ValueCollections\MultitextCustomFieldValueCollection;
+use AmoCRM\Models\CustomFieldsValues\ValueCollections\TextCustomFieldValueCollection;
+use AmoCRM\Models\CustomFieldsValues\ValueModels\MultitextCustomFieldValueModel;
+use AmoCRM\Models\CustomFieldsValues\ValueModels\TextCustomFieldValueModel;
+use AmoCRM\Models\LeadModel;
+use AmoCRM\Models\NoteType\CommonNote;
+use League\OAuth2\Client\Grant\RefreshToken;
+use League\OAuth2\Client\Token\AccessTokenInterface;
+
+require_once($_SERVER['DOCUMENT_ROOT'] . '/wp-load.php');
+
 class Quiz_Amocrm_Public
 {
 

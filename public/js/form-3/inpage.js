@@ -166,8 +166,10 @@
       let floor_bathroom_2 = parseFloat(QA_INPAGE.find("input[name=floor_bathroom_2]").val().trim());
       floor_bathroom_2 = isNaN(floor_bathroom_2) || floor_bathroom_2 < 0 ? 0 : floor_bathroom_2;
       if (floor_bathroom_1 !== 0) {
-        buffer = floor_bathroom_2 * 7 * 850 + 3000;
-        price += buffer;
+        if (floor_bathroom_2 !== 0) {
+          buffer = floor_bathroom_2 * 7 * 850 + 3000;
+          price += buffer;
+        }
         QA_INPAGE.find("input[name=floor_bathroom_2]").removeAttr("disabled");
       } else {
         QA_INPAGE.find("input[name=floor_bathroom_2]").attr("disabled", "disabled");
@@ -196,16 +198,22 @@
       if (square === 0 || isNaN(square) || ceiling_height === 0 || isNaN(ceiling_height) || QA_INPAGE.find(".answer-variants > .variant-select--active").length === 0) {
         rough_calculation.find(".quiz-amocrm-form__price:nth-child(1) span:nth-child(1)").html(0);
         rough_calculation.find(".quiz-amocrm-form__price:nth-child(2) span:nth-child(1)").html(0);
-        QA_INPAGE.find(".quiz-amocrm-inpage__btn-submit").hide();
         return;
+      } else {
+        if (floor_bathroom_1 === 0) {
+          general_calculation.find(".quiz-amocrm-form__price:nth-child(1) span:nth-child(1)").html(0);
+          general_calculation.find(".quiz-amocrm-form__price:nth-child(2) span:nth-child(1)").html(0);
+          QA_INPAGE.find(".quiz-amocrm-inpage__btn-submit").hide();
+        } else {
+          QA_INPAGE.find(".quiz-amocrm-inpage__btn-submit").show();
+          general_calculation.find(".quiz-amocrm-form__price:nth-child(1) span:nth-child(1)").html(f.format(Math.round(price)));
+          general_calculation.find(".quiz-amocrm-form__price:nth-child(2) span:nth-child(1)").html(f.format(Math.round(price / square)));
+        }
       }
 
       // Если все необходимые данные заполнены, показываем кнопку предварительного расчета и заполняем данные
       rough_calculation.find(".quiz-amocrm-form__price:nth-child(1) span:nth-child(1)").html(f.format(Math.round(rough_work)));
       rough_calculation.find(".quiz-amocrm-form__price:nth-child(2) span:nth-child(1)").html(f.format(Math.round(rough_work / square)));
-      general_calculation.find(".quiz-amocrm-form__price:nth-child(1) span:nth-child(1)").html(f.format(Math.round(price)));
-      general_calculation.find(".quiz-amocrm-form__price:nth-child(2) span:nth-child(1)").html(f.format(Math.round(price / square)));
-      QA_INPAGE.find(".quiz-amocrm-inpage__btn-submit").show();
     }
 
     // Установка обработчиков для динамического расчета

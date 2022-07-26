@@ -33,6 +33,7 @@
   flex-direction: column; }
 
 .inline-field__title {
+  color: #333;
   font-size: 20px;
   font-weight: 500;
   white-space: nowrap;

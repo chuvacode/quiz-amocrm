@@ -192,8 +192,10 @@
       let floor_bathroom_2 = parseFloat(QA_POPUP.find("input[name=floor_bathroom_2]").val().trim());
       floor_bathroom_2 = isNaN(floor_bathroom_2) || floor_bathroom_2 < 0 ? 0 : floor_bathroom_2;
       if (floor_bathroom_1 !== 0) {
-        buffer = floor_bathroom_2 * 7 * 850 + 3000;
-        price += buffer;
+        if (floor_bathroom_2 !== 0) {
+          buffer = floor_bathroom_2 * 7 * 850 + 3000;
+          price += buffer;
+        }
         QA_POPUP.find("input[name=floor_bathroom_2]").removeAttr("disabled");
       } else {
         QA_POPUP.find("input[name=floor_bathroom_2]").attr("disabled", "disabled");
@@ -219,26 +221,31 @@
       let state_3 = QA_POPUP.find(".quiz-amocrm__state[data-state=3]");
 
       if (square === 0 || isNaN(square) || ceiling_height === 0 || isNaN(ceiling_height)) {
-        QA_POPUP.find(".quiz-amocrm-form__btn-submit[data-type='pre-submit']").hide();
+
         $(state_2.find(".quiz-amocrm-form__price")[0]).find("span:nth-child(1)").html(0);
         $(state_2.find(".quiz-amocrm-form__price")[1]).find("span:nth-child(1)").html(0);
-
-        $(state_3.find(".quiz-amocrm-form__price")[0]).find("span:nth-child(1)").html(0);
-        $(state_3.find(".quiz-amocrm-form__price")[1]).find("span:nth-child(1)").html(0);
-
         btnNext.addClass("quiz-amocrm__btn--disabled");
         return;
+
+      } else {
+
+        if (floor_bathroom_1 === 0) {
+          $(state_3.find(".quiz-amocrm-form__price")[0]).find("span:nth-child(1)").html(0);
+          $(state_3.find(".quiz-amocrm-form__price")[1]).find("span:nth-child(1)").html(0);
+          QA_POPUP.find(".quiz-amocrm-form__btn-submit[data-type='pre-submit']").hide();
+        } else {
+          $(state_3.find(".quiz-amocrm-form__price")[0]).find("span:nth-child(1)").html(f.format(Math.round(price)));
+          $(state_3.find(".quiz-amocrm-form__price")[1]).find("span:nth-child(1)").html(f.format(Math.round(price / square)));
+          QA_POPUP.find(".quiz-amocrm-form__btn-submit[data-type='pre-submit']").show();
+        }
+
       }
 
       btnNext.removeClass("quiz-amocrm__btn--disabled");
 
-      QA_POPUP.find(".quiz-amocrm-form__btn-submit[data-type='pre-submit']").show();
-
       $(state_2.find(".quiz-amocrm-form__price")[0]).find("span:nth-child(1)").html(f.format(Math.round(rough_work)));
       $(state_2.find(".quiz-amocrm-form__price")[1]).find("span:nth-child(1)").html(f.format(Math.round(rough_work / square)));
 
-      $(state_3.find(".quiz-amocrm-form__price")[0]).find("span:nth-child(1)").html(f.format(Math.round(price)));
-      $(state_3.find(".quiz-amocrm-form__price")[1]).find("span:nth-child(1)").html(f.format(Math.round(price / square)));
     }
 
     // Динамическое обновление расчета
@@ -281,7 +288,7 @@
     }
 
     // Открытие попапа с формой
-    $(".popup-quiz-btn-extended ").on("click", function () {
+    $(".popup-quiz-btn-v3").on("click", function () {
       currentState = 1;
       handlerState(currentState);
       setTimeout(function () {
