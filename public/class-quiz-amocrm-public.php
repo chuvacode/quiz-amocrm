@@ -68,7 +68,7 @@ class Quiz_Amocrm_Public
     public function __construct($plugin_name, $version)
     {
 
-        $locale_mode = true;
+        $this->locale_mode = true;
         $this->plugin_name = $plugin_name;
         $this->version = $version;
         $this->plugin_options = get_option($this->plugin_name);
@@ -76,6 +76,8 @@ class Quiz_Amocrm_Public
         $clientId = isset($this->plugin_options['CLIENT_ID']) ? $this->plugin_options['CLIENT_ID'] : "";
         $clientSecret = isset($this->plugin_options['CLIENT_SECRET']) ? $this->plugin_options['CLIENT_SECRET'] : "";
         $redirectUri = isset($this->plugin_options['CLIENT_REDIRECT_URI']) ? $this->plugin_options['CLIENT_REDIRECT_URI'] : "";
+
+        if ($this->locale_mode) return;
 
         if ($clientId != "" && $clientSecret != "" && $redirectUri != "") {
             $this->apiClient = new \AmoCRM\Client\AmoCRMApiClient($clientId, $clientSecret, $redirectUri);
@@ -158,8 +160,12 @@ class Quiz_Amocrm_Public
          * class.
          */
 
-        wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/quiz-amocrm-public.js', array('jquery'), $this->version, false);
-
+        wp_enqueue_script($this->plugin_name . "_input-mask", 'https://cdn.jsdelivr.net/npm/jquery.maskedinput@1.4.1/src/jquery.maskedinput.min.js', array('jquery'), $this->version, false);
+        wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/quiz-amocrm-public.js', array('jquery', $this->plugin_name . "_input-mask"), $this->version, false);
+        wp_localize_script($this->plugin_name, 'wp_ajax', array(
+            'ajax_url' => admin_url('admin-ajax.php'),
+            '_nonce' => wp_create_nonce('send_form_quiz_amacrm'),
+        ));
     }
 
     /**
@@ -260,7 +266,7 @@ class Quiz_Amocrm_Public
     /**
      * Handler quiz form
      */
-    function handler_form()
+    function handler_quiz_form()
     {
 
         if ($this->locale_mode) {
@@ -492,11 +498,12 @@ class Quiz_Amocrm_Public
     /**
      * [v1] Display Popup Form
      */
-    function render_form_v1()
+    function render_popup_form_v1()
     {
         ob_start();
-        require_once(plugin_dir_path(__FILE__) . 'partials/form-1/quiz-amocrm-popup-form-display.php');
+        require(plugin_dir_path(__FILE__) . 'partials/form-1/quiz-amocrm-popup-form-display.php');
         $html = ob_get_contents();
+        $html = do_shortcode($html);
         ob_end_clean();
 
         return $html;
@@ -505,14 +512,70 @@ class Quiz_Amocrm_Public
     /**
      * [v1] Display In Page Form
      */
-    function render_form_in_page_v1()
+    function render_inpage_form_v1()
     {
         ob_start();
-        require_once(plugin_dir_path(__FILE__) . 'partials/form-1/quiz-amocrm-form-inpage-display.php');
+        require(plugin_dir_path(__FILE__) . 'partials/form-1/quiz-amocrm-form-inpage-display.php');
         $html = ob_get_contents();
         $html = do_shortcode($html);
-
         ob_end_clean();
+
+        return $html;
+    }
+
+    /**
+     * [v2] Display Popup Form
+     */
+    function render_popup_form_v2()
+    {
+        ob_start();
+        require(plugin_dir_path(__FILE__) . 'partials/form-2/quiz-amocrm-popup-form-display.php');
+        $html = ob_get_contents();
+        $html = do_shortcode($html);
+        ob_end_clean();
+
+        return $html;
+    }
+
+    /**
+     * [v2] Display In Page Form
+     */
+    function render_inpage_form_v2()
+    {
+        ob_start();
+        require(plugin_dir_path(__FILE__) . 'partials/form-2/quiz-amocrm-form-inpage-display');
+        $html = ob_get_contents();
+        $html = do_shortcode($html);
+        ob_end_clean();
+
+        return $html;
+    }
+
+    /**
+     * [v3] Display Popup Form
+     */
+    function render_popup_form_v3()
+    {
+        ob_start();
+        require(plugin_dir_path(__FILE__) . 'partials/form-3/quiz-amocrm-popup-form-display.php');
+        $html = ob_get_contents();
+        $html = do_shortcode($html);
+        ob_end_clean();
+
+        return $html;
+    }
+
+    /**
+     * [v3] Display In Page Form
+     */
+    function render_inpage_form_v3()
+    {
+        ob_start();
+        require(plugin_dir_path(__FILE__) . 'partials/form-3/quiz-amocrm-form-inpage-display.php');
+        $html = ob_get_contents();
+        $html = do_shortcode($html);
+        ob_end_clean();
+
         return $html;
     }
 }

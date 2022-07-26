@@ -186,15 +186,21 @@ class Quiz_Amocrm {
         $this->loader->add_action('init', $plugin_public, 'auth');
 
         // AJAX
-        $this->loader->add_action('wp_ajax_send_form_quiz_amacrm', $plugin_public, 'handler_form');
-        $this->loader->add_action('wp_ajax_nopriv_send_form_quiz_amacrm', $plugin_public, 'handler_form');
+        $this->loader->add_action('wp_ajax_send_form_quiz_amacrm', $plugin_public, 'handler_quiz_form');
+        $this->loader->add_action('wp_ajax_nopriv_send_form_quiz_amacrm', $plugin_public, 'handler_quiz_form');
 
         $this->loader->add_action('wp_ajax_handler_form_feedback', $plugin_public, 'handler_form_feedback');
         $this->loader->add_action('wp_ajax_nopriv_handler_form_feedback', $plugin_public, 'handler_form_feedback');
 
         // ShortCodes
-        $this->loader->add_shortcode( 'quiz-form-amocrm', $plugin_public, 'render_form_1' );
-        $this->loader->add_shortcode( 'quiz-form-inpage-amocrm', $plugin_public, 'render_form_inpage_1' );
+        $this->loader->add_shortcode( 'quiz-form-amocrm', $plugin_public, 'render_popup_form_v1' );
+        $this->loader->add_shortcode( 'quiz-form-inpage-amocrm', $plugin_public, 'render_inpage_form_v1' );
+
+        $this->loader->add_shortcode( 'quiz-form-amocrm-extended', $plugin_public, 'render_popup_form_v2' );
+        $this->loader->add_shortcode( 'quiz-form-inpage-amocrm-extended', $plugin_public, 'render_inpage_form_v2' );
+
+        $this->loader->add_shortcode( 'quiz-form-amocrm-v3', $plugin_public, 'render_popup_form_v3' );
+        $this->loader->add_shortcode( 'quiz-form-inpage-amocrm-v3', $plugin_public, 'render_inpage_form_v3' );
 
 	}
 

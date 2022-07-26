@@ -1,5 +1,14 @@
+// Version 1
 import("./form-1/inpage.js");
 import("./form-1/popup.js");
+
+// Version 2
+import("./form-2/inpage.js");
+import("./form-2/popup.js");
+
+// Version 3
+import("./form-3/inpage.js");
+import("./form-3/popup.js");
 
 (function( $ ) {
 	'use strict';
