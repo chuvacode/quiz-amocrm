@@ -68,7 +68,7 @@ class Quiz_Amocrm_Public
     public function __construct($plugin_name, $version)
     {
 
-        $this->locale_mode = true;
+        $this->locale_mode = false;
         $this->plugin_name = $plugin_name;
         $this->version = $version;
         $this->plugin_options = get_option($this->plugin_name);
@@ -79,9 +79,15 @@ class Quiz_Amocrm_Public
 
         if ($this->locale_mode) return;
 
-        if ($clientId != "" && $clientSecret != "" && $redirectUri != "") {
-            $this->apiClient = new \AmoCRM\Client\AmoCRMApiClient($clientId, $clientSecret, $redirectUri);
+        try {
+            if ($clientId != "" && $clientSecret != "" && $redirectUri != "") {
+                $this->apiClient = new \AmoCRM\Client\AmoCRMApiClient($clientId, $clientSecret, $redirectUri);
+            }
+        } catch (\Throwable $e) {
+            wp_die($e);
         }
+
+
 
         $this->access_token = $this->getAccessToken();
 
