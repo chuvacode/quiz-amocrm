@@ -63,6 +63,10 @@ class Quiz_Amocrm_Public
         $this->version = $version;
         $this->plugin_options = get_option($this->plugin_name);
 
+        $clientId = isset($this->plugin_options['CLIENT_ID']) ? $this->plugin_options['CLIENT_ID'] : "";
+        $clientSecret = isset($this->plugin_options['CLIENT_SECRET']) ? $this->plugin_options['CLIENT_SECRET'] : "";
+        $redirectUri = isset($this->plugin_options['CLIENT_REDIRECT_URI']) ? $this->plugin_options['CLIENT_REDIRECT_URI'] : "";
+
     }
 
     /**
@@ -113,4 +117,54 @@ class Quiz_Amocrm_Public
 
     }
 
+    /**
+     * Authorization of AmoCRM services
+     */
+    public function auth()
+    {
+
+        $page_slug = 'quiz-save-answer';
+        $uri = $_SERVER['REQUEST_URI'];
+        $path = wp_parse_url($uri, PHP_URL_PATH);
+
+        if ('/' . trailingslashit($page_slug) === trailingslashit($path)) {
+            $clientId = $this->plugin_options['CLIENT_ID'];
+            $clientSecret = $this->plugin_options['CLIENT_SECRET'];
+            $redirectUri = $this->plugin_options['CLIENT_REDIRECT_URI'];
+
+            $apiClient = new \AmoCRM\Client\AmoCRMApiClient($clientId, $clientSecret, $redirectUri);
+
+            // Catching the reverse code
+            try {
+                if (empty($_GET['code'])) {
+                    die("Empty \$_GET['code']");
+                }
+                if (empty($_GET['referer'])) {
+                    die("Empty \$_GET['referer']");
+                }
+
+                $apiClient->setAccountBaseDomain($_GET['referer']);
+
+                var_dump($apiClient->getOAuthClient());
+
+                $accessToken = $apiClient->getOAuthClient()->getAccessTokenByCode($_GET['code']);
+
+                if (!$accessToken->hasExpired()) {
+                    $this->plugin_options['ACCESS_TOKEN'] = $accessToken->getToken();
+                    $this->plugin_options['REFRESH_TOKEN'] = $accessToken->getRefreshToken();
+                    $this->plugin_options['EXPIRES'] = $accessToken->getExpires();
+                    $this->plugin_options['BASE_DOMAIN'] = $apiClient->getAccountBaseDomain();
+                    update_option($this->plugin_name, $this->plugin_options);
+                    wp_redirect(home_url() . "/wp-admin/options-general.php?page=quiz-amocrm");
+                }
+
+                die("Invalid auth");
+
+            } catch (Exception $e) {
+                die((string)$e);
+            }
+            exit;
+        }
+
+    }
 }
