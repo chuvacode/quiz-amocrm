@@ -43,9 +43,9 @@ class Quiz_Amocrm {
 	 *
 	 * @since    1.0.0
 	 * @access   protected
-	 * @var      string    $quiz_amocrm    The string used to uniquely identify this plugin.
+	 * @var      string    $plugin_name    The string used to uniquely identify this plugin.
 	 */
-	protected $quiz_amocrm;
+	protected $plugin_name;
 
 	/**
 	 * The current version of the plugin.
@@ -71,7 +71,7 @@ class Quiz_Amocrm {
 		} else {
 			$this->version = '1.0.0';
 		}
-		$this->quiz_amocrm = 'quiz-amocrm';
+		$this->plugin_name = 'quiz-amocrm';
 
 		$this->load_dependencies();
 		$this->set_locale();
@@ -191,7 +191,7 @@ class Quiz_Amocrm {
 	 * @return    string    The name of the plugin.
 	 */
 	public function get_quiz_amocrm() {
-		return $this->quiz_amocrm;
+		return $this->plugin_name;
 	}
 
 	/**
