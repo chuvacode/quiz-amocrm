@@ -47,7 +47,6 @@
   color: $color-dark;
   font-size: 20px;
   font-weight: 500;
-  white-space: nowrap;
   margin-right: 10px;
 }
 
@@ -78,6 +77,7 @@
   }
   .inline-field__title {
     margin-bottom: 5px;
+    white-space: nowrap;
   }
 }
 
