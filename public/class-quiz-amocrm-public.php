@@ -67,6 +67,41 @@ class Quiz_Amocrm_Public
         $clientSecret = isset($this->plugin_options['CLIENT_SECRET']) ? $this->plugin_options['CLIENT_SECRET'] : "";
         $redirectUri = isset($this->plugin_options['CLIENT_REDIRECT_URI']) ? $this->plugin_options['CLIENT_REDIRECT_URI'] : "";
 
+        if ($clientId != "" && $clientSecret != "" && $redirectUri != "") {
+            $this->apiClient = new \AmoCRM\Client\AmoCRMApiClient($clientId, $clientSecret, $redirectUri);
+        }
+
+        $this->access_token = $this->getAccessToken();
+
+        // Checking the token's operability
+        try {
+            $this->apiClient
+                ->setAccessToken($this->access_token)
+                ->setAccountBaseDomain($this->access_token->getValues()['baseDomain']);
+            $ownerDetails = $this->apiClient->getOAuthClient()->getResourceOwner($this->access_token);
+        } catch (\Throwable $e) {
+            // Update Token
+            try {
+                $OAuthClient = $this->apiClient->getOAuthClient();
+                $accessToken = $OAuthClient->getOAuthProvider()->getAccessToken(new RefreshToken(), [
+                    'refresh_token' => $this->access_token->getRefreshToken(),
+                ]);
+
+                // Сохраняем токен
+                $this->saveToken(
+                    [
+                        'accessToken' => $accessToken->getToken(),
+                        'refreshToken' => $accessToken->getRefreshToken(),
+                        'expires' => $accessToken->getExpires(),
+                        'baseDomain' => $this->access_token->getValues()['baseDomain']
+                    ]
+                );
+
+            } catch (\Throwable $e) {
+                /*var_dump("Проблемы при обновлении токена AMOCRM");
+                var_dump($e);*/
+            }
+        }
     }
 
     /**
@@ -166,5 +201,49 @@ class Quiz_Amocrm_Public
             exit;
         }
 
+    }
+
+    /**
+     * Getting a new access token
+     */
+    public function getAccessToken()
+    {
+        if (
+            !empty($this->plugin_options['ACCESS_TOKEN'])
+            && !empty($this->plugin_options['REFRESH_TOKEN'])
+            && !empty($this->plugin_options['EXPIRES'])
+            && !empty($this->plugin_options['BASE_DOMAIN'])
+        ) {
+            return new \League\OAuth2\Client\Token\AccessToken([
+                'access_token' => $this->plugin_options['ACCESS_TOKEN'],
+                'refresh_token' => $this->plugin_options['REFRESH_TOKEN'],
+                'expires' => $this->plugin_options['EXPIRES'],
+                'baseDomain' => $this->plugin_options['BASE_DOMAIN'],
+            ]);
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Save a new access token
+     */
+    function saveToken($accessToken)
+    {
+        if (
+            isset($accessToken)
+            && isset($accessToken['accessToken'])
+            && isset($accessToken['refreshToken'])
+            && isset($accessToken['expires'])
+            && isset($accessToken['baseDomain'])
+        ) {
+            $this->plugin_options['ACCESS_TOKEN'] = $accessToken['accessToken'];
+            $this->plugin_options['REFRESH_TOKEN'] = $accessToken['refreshToken'];
+            $this->plugin_options['EXPIRES'] = $accessToken['expires'];
+            $this->plugin_options['BASE_DOMAIN'] = $accessToken['baseDomain'];
+            update_option($this->plugin_name, $this->plugin_options);
+        } else {
+            exit('Invalid access token ' . var_export($accessToken, true));
+        }
     }
 }
