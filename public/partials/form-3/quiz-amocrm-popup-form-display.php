@@ -76,7 +76,7 @@
             <option value="2">1 комната</option>
             <option value="3">2 комнаты</option>
             <option value="4">3 комнаты</option>
-            <option value="5">Более 4 комнат</option>
+            <option value="5">4 комнаты и более</option>
           </select>
         </div>
 
