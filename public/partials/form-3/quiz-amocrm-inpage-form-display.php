@@ -221,10 +221,10 @@
                     <div class="w-form-row-field">
                       <select class="quiz-amocrm__input quiz-amocrm__select" name="layout" style="margin-top: 0;">
                         <option value="1">Студия</option>
-                        <option value="2">1 комната</option>
-                        <option value="3">2 комнаты</option>
-                        <option value="4">3 комнаты</option>
-                        <option value="5">4 комнаты и более</option>
+                        <option value="2">1 комнатная</option>
+                        <option value="3">2 комнатная</option>
+                        <option value="4">3 комнатная</option>
+                        <option value="5">4+ комнатная</option>
                       </select>
                     </div>
                   </div>
