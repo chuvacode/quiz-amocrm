@@ -202,6 +202,8 @@ class Quiz_Amocrm {
         $this->loader->add_shortcode( 'quiz-form-amocrm-v3', $plugin_public, 'render_popup_form_v3' );
         $this->loader->add_shortcode( 'quiz-form-inpage-amocrm-v3', $plugin_public, 'render_inpage_form_v3' );
 
+        $this->loader->add_shortcode( 'quiz-form-finishing-material', $plugin_public, 'render_finishing_material' );
+
 	}
 
 	/**

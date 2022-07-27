@@ -10,6 +10,9 @@ import("./form-2/popup.js");
 import("./form-3/inpage.js");
 import("./form-3/popup.js");
 
+// Finishing Material Calculator
+import("./form-4/index.js");
+
 (function( $ ) {
 	'use strict';
 

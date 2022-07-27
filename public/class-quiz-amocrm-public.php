@@ -537,7 +537,7 @@ class Quiz_Amocrm_Public
     function render_inpage_form_v1()
     {
         ob_start();
-        require(plugin_dir_path(__FILE__) . 'partials/form-1/quiz-amocrm-form-inpage-display.php');
+        require(plugin_dir_path(__FILE__) . 'partials/form-1/quiz-amocrm-inpage-form-display.php');
         $html = ob_get_contents();
         $html = do_shortcode($html);
         ob_end_clean();
@@ -565,7 +565,7 @@ class Quiz_Amocrm_Public
     function render_inpage_form_v2()
     {
         ob_start();
-        require(plugin_dir_path(__FILE__) . 'partials/form-2/quiz-amocrm-form-inpage-display');
+        require(plugin_dir_path(__FILE__) . 'partials/form-2/quiz-amocrm-inpage-form-display.php');
         $html = ob_get_contents();
         $html = do_shortcode($html);
         ob_end_clean();
@@ -593,7 +593,21 @@ class Quiz_Amocrm_Public
     function render_inpage_form_v3()
     {
         ob_start();
-        require(plugin_dir_path(__FILE__) . 'partials/form-3/quiz-amocrm-form-inpage-display.php');
+        require(plugin_dir_path(__FILE__) . 'partials/form-3/quiz-amocrm-inpage-form-display.php');
+        $html = ob_get_contents();
+        $html = do_shortcode($html);
+        ob_end_clean();
+
+        return $html;
+    }
+
+    /**
+     * Display Finishing Material Calculator
+     */
+    function render_finishing_material()
+    {
+        ob_start();
+        require(plugin_dir_path(__FILE__) . 'partials/quiz-amocrm-finishing-display.php');
         $html = ob_get_contents();
         $html = do_shortcode($html);
         ob_end_clean();
