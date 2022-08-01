@@ -614,4 +614,18 @@ class Quiz_Amocrm_Public
 
         return $html;
     }
+
+    /**
+     * Display Finishing Material Calculator
+     */
+    function render_callback_form()
+    {
+        ob_start();
+        require(plugin_dir_path(__FILE__) . 'partials/quiz-amocrm-callback-display.php');
+        $html = ob_get_contents();
+        $html = do_shortcode($html);
+        ob_end_clean();
+
+        return $html;
+    }
 }

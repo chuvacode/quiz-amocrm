@@ -204,6 +204,8 @@ class Quiz_Amocrm {
 
         $this->loader->add_shortcode( 'quiz-form-finishing-material', $plugin_public, 'render_finishing_material' );
 
+        $this->loader->add_shortcode( 'quiz-form-callback', $plugin_public, 'render_callback_form' );
+
 	}
 
 	/**

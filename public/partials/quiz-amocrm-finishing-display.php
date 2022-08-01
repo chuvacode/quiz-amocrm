@@ -72,7 +72,7 @@
   <div class="quiz-amocrm-send-form--material">
 
     <div class="quiz-amocrm__title">
-      Вместе с расчетом отправим Вам инструкцию <br> «Советы при подготовке к ремонту»
+      С ответом на заявку отправим Вам инструкцию<br> «Советы при подготовке к ремонту»
     </div>
 
     <form class="quiz-amocrm-form">
