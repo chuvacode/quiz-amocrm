@@ -220,6 +220,7 @@
                     </div>
                     <div class="w-form-row-field">
                       <select class="quiz-amocrm__input quiz-amocrm__select" name="layout" style="margin-top: 0;">
+                        <option value="0">Не выбрано</option>
                         <option value="1">Студия</option>
                         <option value="2">1 комнатная</option>
                         <option value="3">2 комнатная</option>

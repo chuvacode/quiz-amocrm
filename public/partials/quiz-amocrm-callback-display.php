@@ -18,7 +18,7 @@
                     class="quiz-amocrm-form__input" id="qa-f-phone-inpage-3" data-type="phone" name="phone" type="text">
             </div>
             <div class="quiz-amocrm-form__btn-submit" data-type="submit-inpage">
-              Перезвонить мне
+              Отправить
             </div>
             <div class="quiz-amocrm-form__agreement quiz-amocrm-form__agreement--inpage quiz-amocrm-form__agreement--active">
                 <div class="quiz-amocrm-form__agreement-checkbox"></div>

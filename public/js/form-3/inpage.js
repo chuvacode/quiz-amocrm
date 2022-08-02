@@ -159,8 +159,10 @@
       // Первый санузел
       let floor_bathroom_1 = parseFloat(QA_INPAGE.find("input[name=floor_bathroom_1]").val().trim());
       floor_bathroom_1 = isNaN(floor_bathroom_1) || floor_bathroom_1 < 0 ? 0 : floor_bathroom_1;
-      buffer = floor_bathroom_1 * 7 * 850 + 16000;
-      price += buffer;
+      if (floor_bathroom_1 !== 0) {
+        buffer = floor_bathroom_1 * 7 * 850 + 16000;
+        price += buffer;
+      }
 
       // Второй санузел
       let floor_bathroom_2 = parseFloat(QA_INPAGE.find("input[name=floor_bathroom_2]").val().trim());
@@ -175,19 +177,22 @@
         QA_INPAGE.find("input[name=floor_bathroom_2]").attr("disabled", "disabled");
       }
 
-      // Комнаты (Стены + Пол)
-      let square_without_bathroom = square - floor_bathroom_1 - floor_bathroom_2;
-      buffer = square_without_bathroom * ceiling_height * ratio_plaster * 550;
-      price += buffer;
+      // Отделка комнат
+      let layout = parseInt(QA_INPAGE.find("select[name=layout]").val());
+      if (layout !== 0) {
+        // Комнаты (Двери)
+        let price_doors = layout * 3000;
+        price += price_doors;
 
-      // Комнаты (Потолок)
-      buffer = square * 700;
-      price += buffer;
+        // Комнаты (Стены + Пол)
+        let square_without_bathroom = square - floor_bathroom_1 - floor_bathroom_2;
+        buffer = square_without_bathroom * ceiling_height * ratio_plaster * 550;
+        price += buffer;
 
-      // Комнаты (Двери)
-      let layout = QA_INPAGE.find("select[name=layout]").val();
-      let price_doors = layout * 3000;
-      price += price_doors;
+        // Комнаты (Потолок)
+        buffer = square * 700;
+        price += buffer;
+      }
 
       let f = new Intl.NumberFormat("ru", {style: "decimal"});
 
@@ -198,17 +203,21 @@
       if (square === 0 || isNaN(square) || ceiling_height === 0 || isNaN(ceiling_height) || QA_INPAGE.find(".answer-variants > .variant-select--active").length === 0) {
         rough_calculation.find(".quiz-amocrm-form__price:nth-child(1) span:nth-child(1)").html(0);
         rough_calculation.find(".quiz-amocrm-form__price:nth-child(2) span:nth-child(1)").html(0);
+
+        general_calculation.find(".quiz-amocrm-form__price:nth-child(1) span:nth-child(1)").html(0);
+        general_calculation.find(".quiz-amocrm-form__price:nth-child(2) span:nth-child(1)").html(0);
+        QA_INPAGE.find(".quiz-amocrm-inpage__btn-submit").hide();
         return;
       } else {
-        if (floor_bathroom_1 === 0) {
-          general_calculation.find(".quiz-amocrm-form__price:nth-child(1) span:nth-child(1)").html(0);
-          general_calculation.find(".quiz-amocrm-form__price:nth-child(2) span:nth-child(1)").html(0);
-          QA_INPAGE.find(".quiz-amocrm-inpage__btn-submit").hide();
-        } else {
-          QA_INPAGE.find(".quiz-amocrm-inpage__btn-submit").show();
-          general_calculation.find(".quiz-amocrm-form__price:nth-child(1) span:nth-child(1)").html(f.format(Math.round(price)));
-          general_calculation.find(".quiz-amocrm-form__price:nth-child(2) span:nth-child(1)").html(f.format(Math.round(price / square)));
-        }
+        QA_INPAGE.find(".quiz-amocrm-inpage__btn-submit").show();
+        general_calculation.find(".quiz-amocrm-form__price:nth-child(1) span:nth-child(1)").html(f.format(Math.round(price)));
+        general_calculation.find(".quiz-amocrm-form__price:nth-child(2) span:nth-child(1)").html(f.format(Math.round(price / square)));
+
+        // if (floor_bathroom_1 === 0 || true) {
+        //
+        // } else {
+        //
+        // }
       }
 
       // Если все необходимые данные заполнены, показываем кнопку предварительного расчета и заполняем данные
