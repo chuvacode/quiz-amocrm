@@ -163,7 +163,7 @@
           <svg viewBox="0 0 24 24" class="mdi-icon mdi-24px"><title>mdi-arrow-left</title><path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" stroke-width="0" fill-rule="nonzero"></path></svg>
           <span>Назад</span>
         </div>
-        <div class="quiz-amocrm__next quiz-amocrm__btn quiz-amocrm__btn--disabled">
+        <div class="quiz-amocrm__next quiz-amocrm__btn">
           <span>Далее</span>
           <svg viewBox="0 0 24 24" class="mdi-icon mdi-24px"><title>mdi-arrow-right</title><path d="M4,11V13H16L10.5,18.5L11.92,19.92L19.84,12L11.92,4.08L10.5,5.5L16,11H4Z" stroke-width="0" fill-rule="nonzero"></path></svg>
         </div>

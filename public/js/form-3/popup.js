@@ -268,6 +268,7 @@
           } else {
             btnNext.addClass("quiz-amocrm__btn--disabled");
           }
+          btnNext.removeClass("quiz-amocrm__btn--disabled");
           btnBack.addClass("quiz-amocrm__btn--disabled");
           break;
         case 2:

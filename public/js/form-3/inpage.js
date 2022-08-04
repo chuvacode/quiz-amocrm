@@ -200,10 +200,9 @@
       let general_calculation = QA_INPAGE.find(".quiz-amocrm-inpage__prices[data-type=general]");
 
       // Если не все необходимые данные заполнены, скрываем кнопку предварительного расчета и очищаем данные
-      if (square === 0 || isNaN(square) || ceiling_height === 0 || isNaN(ceiling_height) || QA_INPAGE.find(".answer-variants > .variant-select--active").length === 0) {
+      if (square === 0 || isNaN(square) || ceiling_height === 0 || isNaN(ceiling_height)) {
         rough_calculation.find(".quiz-amocrm-form__price:nth-child(1) span:nth-child(1)").html(0);
         rough_calculation.find(".quiz-amocrm-form__price:nth-child(2) span:nth-child(1)").html(0);
-
         general_calculation.find(".quiz-amocrm-form__price:nth-child(1) span:nth-child(1)").html(0);
         general_calculation.find(".quiz-amocrm-form__price:nth-child(2) span:nth-child(1)").html(0);
         QA_INPAGE.find(".quiz-amocrm-inpage__btn-submit").hide();
@@ -212,12 +211,6 @@
         QA_INPAGE.find(".quiz-amocrm-inpage__btn-submit").show();
         general_calculation.find(".quiz-amocrm-form__price:nth-child(1) span:nth-child(1)").html(f.format(Math.round(price)));
         general_calculation.find(".quiz-amocrm-form__price:nth-child(2) span:nth-child(1)").html(f.format(Math.round(price / square)));
-
-        // if (floor_bathroom_1 === 0 || true) {
-        //
-        // } else {
-        //
-        // }
       }
 
       // Если все необходимые данные заполнены, показываем кнопку предварительного расчета и заполняем данные
