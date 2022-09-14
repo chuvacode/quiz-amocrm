@@ -51,9 +51,9 @@
 
                             <div class="w-form-row cols_1 quiz-amocrm-inpage__btn-submit-container">
                                 <div class="quiz-amocrm-inpage__btn-submit quiz-amocrm-form__btn-submit">
-                                    Оставить заявку для расчета
-                                    <br>
-                                    чистовых материалов
+                                    Получить бесплатное
+                                  <br>
+                                  планировочное решение
                                 </div>
                                 <div id="quiz-amocrm-material__send" style="display:none;"></div>
                             </div>

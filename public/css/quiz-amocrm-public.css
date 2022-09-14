@@ -137,6 +137,10 @@
   .quiz-amocrm__select:focus, .quiz-amocrm__select {
     outline: none; }
 
+.quiz-amocrm__select[name=special-offer] {
+  background-color: #f8ea58 !important;
+  font-weight: 500; }
+
 .answer-variants__variant-select {
   flex: 0 1 calc((100% - 20px) / 2); }
   .answer-variants__variant-select:not(:nth-child(2n+2)) {
@@ -638,5 +642,33 @@
 
   .quiz-amocrm__states {
     min-height: 555px; } }
+.quiz-amocrm-inpage__tips {
+  display: flex;
+  flex-direction: column;
+  margin: 20px auto;
+  border: 1px dashed #ffffff;
+  border-radius: 16px;
+  padding: 15px; }
+
+.quiz-amocrm-inpage__tips-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 20px; }
+
+.quiz-amocrm-inpage__tips-list {
+  display: flex;
+  flex-direction: column; }
+
+.quiz-amocrm-inpage__tips-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px; }
+  .quiz-amocrm-inpage__tips-item svg {
+    margin-left: 10px;
+    width: 20px;
+    height: auto;
+    transition: all .3s ease; }
+  .quiz-amocrm-inpage__tips-item:hover svg {
+    transform: translateX(10px); }
 
 /*# sourceMappingURL=quiz-amocrm-public.css.map */

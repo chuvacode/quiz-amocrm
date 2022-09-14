@@ -3,6 +3,23 @@
 
   $(document).ready(function () {
 
+    // Плавная прокрутка
+    (() => {
+      const anchors = document.querySelectorAll('a[href*="#"]');
+      for (let anchor of anchors) {
+        anchor.addEventListener('click', function (e) {
+          e.preventDefault()
+
+          const blockID = anchor.getAttribute('href').substr(1)
+
+          document.getElementById(blockID).scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          })
+        })
+      }
+    })();
+
     // Формы
     let QA_INPAGE = $(".quiz-amocrm-inpage-3");
     let QA_INPAGE_SEND_FORM = $(".quiz-amocrm-send-form--3");
@@ -35,6 +52,9 @@
       }
     });
 
+
+
+
     // Предварительный расчет стоимости
     function dynamic_calc() {
 
@@ -51,42 +71,44 @@
       let square = parseFloat(QA_INPAGE.find("input[name=floor_area]").val().trim());
 
       // Высота потолков
-      let ceiling_height = parseFloat(QA_INPAGE.find("input[name=ceiling_height]").val().trim());
+      let ceiling_height = parseFloat(QA_INPAGE.find("[name=ceiling_height]").val().trim());
+
+      // Специальное предложение
+      let special_offer = QA_INPAGE.find("[name=special-offer]").val();
 
       // Штукатурные работы
       let ratio_plaster = 0; // Кооэфициент штукатурных работ
+      // Определяем коэффициент
+      switch (true) {
+        case square >= 0 && square < 25:
+          ratio_plaster = 1.5;
+          break;
+        case square >= 25 && square < 30:
+          ratio_plaster = 1.45;
+          break;
+        case square >= 30 && square < 35:
+          ratio_plaster = 1.4;
+          break;
+        case square >= 35 && square < 40:
+          ratio_plaster = 1.35;
+          break;
+        case square >= 40 && square < 45:
+          ratio_plaster = 1.3;
+          break;
+        case square >= 45 && square < 50:
+          ratio_plaster = 1.25;
+          break;
+        case square >= 50 && square < 55:
+          ratio_plaster = 1.2;
+          break;
+        case square >= 55 && square < 60:
+          ratio_plaster = 1.15;
+          break;
+        case square >= 60:
+          ratio_plaster = 1.1;
+          break;
+      }
       if (QA_INPAGE.find(".answer-variants > .variant-select:nth-child(1)").hasClass("variant-select--active")) {
-        // Определяем коэффициент
-        switch (true) {
-          case square >= 0 && square < 25:
-            ratio_plaster = 1.5;
-            break;
-          case square >= 25 && square < 30:
-            ratio_plaster = 1.45;
-            break;
-          case square >= 30 && square < 35:
-            ratio_plaster = 1.4;
-            break;
-          case square >= 35 && square < 40:
-            ratio_plaster = 1.35;
-            break;
-          case square >= 40 && square < 45:
-            ratio_plaster = 1.3;
-            break;
-          case square >= 45 && square < 50:
-            ratio_plaster = 1.25;
-            break;
-          case square >= 50 && square < 55:
-            ratio_plaster = 1.2;
-            break;
-          case square >= 55 && square < 60:
-            ratio_plaster = 1.15;
-            break;
-          case square >= 60:
-            ratio_plaster = 1.1;
-            break;
-        }
-
         buffer = square * ceiling_height * ratio_plaster * 350;
         rough_work += buffer;
       }
@@ -99,45 +121,44 @@
 
       // Трасса под сплит-систему
       let ratio_split = 0;
+      // Определяем коэффициент
+      switch (true) {
+        case square >= 0 && square < 25:
+          ratio_split = 1;
+          break;
+        case square >= 25 && square < 30:
+          ratio_split = 1;
+          break;
+        case square >= 30 && square < 35:
+          ratio_split = 1;
+          break;
+        case square >= 35 && square < 40:
+          ratio_split = 1;
+          break;
+        case square >= 40 && square < 45:
+          ratio_split = 1;
+          break;
+        case square >= 45 && square < 50:
+          ratio_split = 2;
+          break;
+        case square >= 50 && square < 55:
+          ratio_split = 2;
+          break;
+        case square >= 55 && square < 60:
+          ratio_split = 2;
+          break;
+        case square >= 60 && square < 65:
+          ratio_split = 2;
+          break;
+        case square >= 65 && square < 70:
+          ratio_split = 3;
+          break;
+        case square >= 70:
+          ratio_split = 3;
+          break;
+      }
+
       if (QA_INPAGE.find(".answer-variants > .variant-select:nth-child(3)").hasClass("variant-select--active")) {
-
-        // Определяем коэффициент
-        switch (true) {
-          case square >= 0 && square < 25:
-            ratio_split = 1;
-            break;
-          case square >= 25 && square < 30:
-            ratio_split = 1;
-            break;
-          case square >= 30 && square < 35:
-            ratio_split = 1;
-            break;
-          case square >= 35 && square < 40:
-            ratio_split = 1;
-            break;
-          case square >= 40 && square < 45:
-            ratio_split = 1;
-            break;
-          case square >= 45 && square < 50:
-            ratio_split = 2;
-            break;
-          case square >= 50 && square < 55:
-            ratio_split = 2;
-            break;
-          case square >= 55 && square < 60:
-            ratio_split = 2;
-            break;
-          case square >= 60 && square < 65:
-            ratio_split = 2;
-            break;
-          case square >= 65 && square < 70:
-            ratio_split = 3;
-            break;
-          case square >= 70:
-            ratio_split = 3;
-            break;
-        }
-
         buffer = ratio_split * 8000;
         rough_work += buffer;
       }
@@ -196,32 +217,77 @@
 
       let f = new Intl.NumberFormat("ru", {style: "decimal"});
 
+
+
       let rough_calculation = QA_INPAGE.find(".quiz-amocrm-inpage__prices[data-type=rough]");
       let general_calculation = QA_INPAGE.find(".quiz-amocrm-inpage__prices[data-type=general]");
 
-      // Если не все необходимые данные заполнены, скрываем кнопку предварительного расчета и очищаем данные
-      if (square === 0 || isNaN(square) || ceiling_height === 0 || isNaN(ceiling_height)) {
-        rough_calculation.find(".quiz-amocrm-form__price:nth-child(1) span:nth-child(1)").html(0);
-        rough_calculation.find(".quiz-amocrm-form__price:nth-child(2) span:nth-child(1)").html(0);
-        general_calculation.find(".quiz-amocrm-form__price:nth-child(1) span:nth-child(1)").html(0);
-        general_calculation.find(".quiz-amocrm-form__price:nth-child(2) span:nth-child(1)").html(0);
-        QA_INPAGE.find(".quiz-amocrm-inpage__btn-submit").hide();
-        return;
+      // Валидаторы
+      const is_height = !(ceiling_height === 0 || isNaN(ceiling_height));
+      const is_square = !(square === 0 || isNaN(square));
+      const is_rough_variants = QA_INPAGE.find(".answer-variants > .variant-select").hasClass("variant-select--active");
+      const is_general_value = is_square && is_height;
+      const is_special_offer = special_offer !== 'null';
+
+      // Настройка подсказок
+      const rough_tips = QA_INPAGE.find(".quiz-amocrm-inpage__tips[data-type=rough]");
+      const general_tips = QA_INPAGE.find(".quiz-amocrm-inpage__tips[data-type=general]");
+
+      const tips = () => {
+        const tips = QA_INPAGE.find(".quiz-amocrm-inpage__tips");
+        const tip_rough = tips.find(".quiz-amocrm-inpage__tips-list > .quiz-amocrm-inpage__tips-item:nth-child(1)");
+        const tip_height = tips.find(".quiz-amocrm-inpage__tips-list > .quiz-amocrm-inpage__tips-item:nth-child(2)");
+        const tip_square = tips.find(".quiz-amocrm-inpage__tips-list > .quiz-amocrm-inpage__tips-item:nth-child(3)");
+
+        if (is_rough_variants) tip_rough.hide();
+        else tip_rough.show();
+
+        if (is_height) tip_height.hide();
+        else tip_height.show();
+
+        if (is_square) tip_square.hide();
+        else tip_square.show();
+      };
+      tips();
+
+      // Если заполнена высота с площадью и выбран вариант черновых работ
+      if (is_general_value && is_rough_variants) {
+        rough_calculation.find(".quiz-amocrm-form__price:nth-child(1) span:nth-child(1)").html(f.format(Math.round(rough_work)));
+        rough_calculation.find(".quiz-amocrm-form__price:nth-child(2) span:nth-child(1)").html(f.format(Math.round(rough_work / square)));
+        rough_tips.hide();
+        rough_calculation.show();
       } else {
-        QA_INPAGE.find(".quiz-amocrm-inpage__btn-submit").show();
-        general_calculation.find(".quiz-amocrm-form__price:nth-child(1) span:nth-child(1)").html(f.format(Math.round(price)));
-        general_calculation.find(".quiz-amocrm-form__price:nth-child(2) span:nth-child(1)").html(f.format(Math.round(price / square)));
+        rough_tips.show();
+        rough_calculation.hide();
       }
 
-      // Если все необходимые данные заполнены, показываем кнопку предварительного расчета и заполняем данные
-      rough_calculation.find(".quiz-amocrm-form__price:nth-child(1) span:nth-child(1)").html(f.format(Math.round(rough_work)));
-      rough_calculation.find(".quiz-amocrm-form__price:nth-child(2) span:nth-child(1)").html(f.format(Math.round(rough_work / square)));
+      // Если заполнены основные данные
+      if (is_general_value) {
+        general_calculation.find(".quiz-amocrm-form__price:nth-child(1) span:nth-child(1)").html(f.format(Math.round(price)));
+        general_calculation.find(".quiz-amocrm-form__price:nth-child(2) span:nth-child(1)").html(f.format(Math.round(price / square)));
+        QA_INPAGE.find(".quiz-amocrm-inpage__btn-submit").show();
+        general_tips.hide();
+        general_calculation.show();
+      } else {
+        QA_INPAGE.find(".quiz-amocrm-inpage__btn-submit").hide();
+        general_tips.show();
+        general_calculation.hide();
+      }
+
+      // Если выбрали специальное предложение
+      if (is_special_offer || is_general_value) {
+        QA_INPAGE.find(".quiz-amocrm-inpage__btn-submit").show();
+      } else {
+        QA_INPAGE.find(".quiz-amocrm-inpage__btn-submit").hide();
+      }
     }
 
     // Установка обработчиков для динамического расчета
     QA_INPAGE.find('.variant-select').on('click', dynamic_calc);
     QA_INPAGE.find("input").on("input", dynamic_calc);
     QA_INPAGE.find("select").on("change", dynamic_calc);
+
+    dynamic_calc();
 
     // Открываем popup с формой для отправки данных
     QA_INPAGE.find('.quiz-amocrm-inpage__btn-submit').on('click', function () {
@@ -276,7 +342,7 @@
         });
 
         let celling_height = [];
-        celling_height.push(QA_INPAGE.find("input[name=ceiling_height]").val().trim());
+        celling_height.push(QA_INPAGE.find("[name=ceiling_height]").val().trim());
 
         let floor_area = [];
         floor_area.push(QA_INPAGE.find("input[name=floor_area]").val().trim());
@@ -289,6 +355,9 @@
 
         let layout = [];
         layout.push(QA_INPAGE.find("select[name=layout] option:selected").text());
+
+        let special_offer = [];
+        special_offer.push(QA_INPAGE.find("[name=special-offer] option:selected").val());
 
         let data = {
           "quiz": [
@@ -315,6 +384,10 @@
             {
               "title": "Укажите планировку вашего объекта:",
               "value": layout
+            },
+            {
+              "title": "Выбранное специальное предложение:",
+              "value": special_offer
             }
           ],
           "firstname": firstname,

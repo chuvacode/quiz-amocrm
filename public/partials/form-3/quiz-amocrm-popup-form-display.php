@@ -1,4 +1,4 @@
-<div class="quiz-amocrm quiz-amocrm--V3">
+    <div class="quiz-amocrm quiz-amocrm--V3">
   <div class="quiz-amocrm__container">
     <div class="quiz-amocrm__states">
       <div class="quiz-amocrm__state quiz-amocrm__state--active" data-state="1">
@@ -31,11 +31,19 @@
         </div>
       </div>
       <div class="quiz-amocrm__state" data-state="2">
-        <div class="quiz-amocrm__title">Укажите <strong>площадь по полу</strong> Вашего объекта, м2</div>
-        <input class="quiz-amocrm__input" type="number" name="floor_area" min="1" value="" style="margin-top: 0;"/>
-        <br>
         <div class="quiz-amocrm__title">Укажите <strong>высоту до потолка</strong> Вашего объекта, м</div>
-        <input class="quiz-amocrm__input" type="number" name="ceiling_height" min="1" value="" style="margin-top: 0;" />
+        <select class="quiz-amocrm__input quiz-amocrm__select" name="ceiling_height">
+          <option value="0">Не выбрано</option>
+          <option value="2.6">2.6</option>
+          <option value="2.7">2.7</option>
+          <option value="2.8">2.8</option>
+          <option value="2.9">2.9</option>
+          <option value="3.0">3.0</option>
+        </select>
+        <br>
+        <div class="quiz-amocrm__title">Укажите <strong>площадь по полу</strong> Вашего объекта, м2</div>
+        <input class="quiz-amocrm__input" type="number" name="floor_area" min="1" value="" step="0.5" style="margin-top: 0;"/>
+
 
         <form class="quiz-amocrm-form quiz-amocrm__preprice" style="max-width: 600px; margin-top: 0px;">
           <div class="quiz-amocrm__title quiz-amocrm__preprice-title">
@@ -58,12 +66,12 @@
 
         <div class="inline-field quiz-amocrm__inline-field">
           <div class="inline-field__title">Укажите <strong>площадь</strong> С/У 1:</div>
-          <input class="quiz-amocrm__input" type="number" name="floor_bathroom_1" min="1" value="" style="margin-top: 0;"/>
+          <input class="quiz-amocrm__input" type="number" name="floor_bathroom_1" min="1" step="0.1"  value="" style="margin-top: 0;"/>
         </div>
 
         <div class="inline-field quiz-amocrm__inline-field">
           <div class="inline-field__title">Укажите <strong>площадь</strong> С/У 2 (если есть):</div>
-          <input class="quiz-amocrm__input" type="number" name="floor_bathroom_2" min="1" value="" style="margin-top: 0;" disabled="disabled" />
+          <input class="quiz-amocrm__input" type="number" name="floor_bathroom_2" step="0.1" min="1" value="" style="margin-top: 0;" disabled="disabled" />
         </div>
 
         <br>
@@ -93,6 +101,20 @@
           <div class="quiz-amocrm-form__price">
             <span>0</span>
             <span>Руб. / м2</span>
+          </div>
+
+
+          <div class="w-form-row-label">
+            <span>Выберите действующее спец.предложение:</span>
+          </div>
+          <div class="w-form-row-field">
+            <select class="quiz-amocrm__input quiz-amocrm__select" name="special-offer" style="margin: 0 0 20px 0;">
+              <option value="null">Не выбрано</option>
+              <option value="Скидка на ремонт 5%">Скидка на ремонт 5%</option>
+              <option value="Проект ремонта в подарок">Проект ремонта в подарок</option>
+              <option value="Инструкция в подарок">Инсталляция в подарок</option>
+              <option value="Сплит система в подарок">Сплит система в подарок</option>
+            </select>
           </div>
 
           <div class="quiz-amocrm-form__btn-submit" data-type="pre-submit" style="display:none;">

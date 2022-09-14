@@ -1,7 +1,7 @@
 <div class="quiz-amocrm-inpage quiz-amocrm-inpage-3">
 
   <!-- Какие черновые работы нужно выполнить? -->
-  <section class="l-section wpb_row height_auto">
+  <section id="qa-v3-b-1" class="l-section wpb_row height_auto">
     <div class="l-section-h i-cf">
       <div class="g-cols vc_row via_flex valign_top type_default stacking_default">
         <div
@@ -35,7 +35,7 @@
                 <span>выберите один или несколько</span>
               </div>
 
-              <div class="answer-variants">
+              <div class="answer-variants" id="qa-v3-f--jobs">
                 <div class="variant-select answer-variants__variant-select">
                   <div class="variant-select__checkbox"></div>
                   <div class="variant-select__text">Штукатурные работы</div>
@@ -68,7 +68,7 @@
   </section>
 
   <!-- Укажите высоту до потолка Вашего объекта, м + Предварительный расчет -->
-  <section class="l-section wpb_row height_auto color_primary with_shape">
+  <section id="qa-v3-b-2" class="l-section wpb_row height_auto color_primary with_shape">
     <div class="l-section-shape type_triangle-inv pos_top">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 8" preserveAspectRatio="none" width="100%" height="100%">
         <path fill="currentColor" d="M64 9 L0 9 L0 7.9 L32 0 L64 7.9 Z"></path>
@@ -86,26 +86,8 @@
         <div class="vc_col-sm-8 wpb_column vc_column_container">
           <div class="vc_column-inner">
             <div class="wpb_wrapper">
-              <div class="w-separator us_custom_532377d0 size_medium"></div>
-              <div class="w-separator us_custom_532377d0 size_medium"></div>
-              <div class="wpb_text_column">
-                <div class="wpb_wrapper"><h4 style="text-align: center;">Укажите площадь по полу Вашего объекта, м2</h4>
-                </div>
-              </div>
 
-              <div class="quiz-amocrm-inpage__w-form quiz-amocrm-inpage__w-form--extented layout_ver for_cform"
-                   style="--fields-gap:1.5rem">
-                <div class="w-form-h">
-                  <div class="w-form-row for_text has_label cols_1">
-                    <div class="w-form-row-field">
-                      <input class="quiz-amocrm-inpage__m3" aria-label="Укажите площадь по полу Вашего объекта, м2"
-                             type="number" min="1" name="floor_area" value="">
-                    </div>
-                  </div>
-
-                </div>
-                <div class="w-form-message"></div>
-              </div>
+              <!-- Укажите высоту до потолка Вашего объекта, м -->
               <div class="w-separator us_custom_532377d0 size_medium"></div>
               <div class="w-separator us_custom_532377d0 size_medium"></div>
               <div class="wpb_text_column">
@@ -119,16 +101,68 @@
                 <div class="w-form-h">
                   <div class="w-form-row for_text has_label cols_1">
                     <div class="w-form-row-field">
-                      <input class="quiz-amocrm-inpage__m3" aria-label="Укажите площадь по полу Вашего объекта, м2"
-                             type="number" min="1" name="ceiling_height" value="">
+                      <select id="qa-v3-f--height" class="quiz-amocrm__input quiz-amocrm__select" name="ceiling_height">
+                        <option value="0">Не выбрано</option>
+                        <option value="2.6">2.6</option>
+                        <option value="2.7">2.7</option>
+                        <option value="2.8">2.8</option>
+                        <option value="2.9">2.9</option>
+                        <option value="3.0">3.0</option>
+                      </select>
                     </div>
                   </div>
+                </div>
+              </div>
+              <!-- Укажите высоту до потолка Вашего объекта, м -->
+
+              <!-- Укажите площадь по полу Вашего объекта, м2 -->
+              <div class="w-separator us_custom_532377d0 size_medium"></div>
+              <div class="w-separator us_custom_532377d0 size_medium"></div>
+              <div class="wpb_text_column">
+                <div class="wpb_wrapper"><h4 style="text-align: center;">Укажите площадь по полу Вашего объекта, м2</h4>
+                </div>
+              </div>
+              <div class="quiz-amocrm-inpage__w-form quiz-amocrm-inpage__w-form--extented layout_ver for_cform"
+                   style="--fields-gap:1.5rem">
+                <div class="w-form-h">
+                  <div class="w-form-row for_text has_label cols_1">
+                    <div class="w-form-row-field">
+                      <input id="qa-v3-f--floor" class="quiz-amocrm-inpage__m3" aria-label="Укажите площадь по полу Вашего объекта, м2"
+                             type="number" min="1" name="floor_area" step="0.5" value="">
+                    </div>
+                  </div>
+
+                  <!--Предварительный расчет стоимости черновых работ:-->
                   <div class="w-form-row cols_1 quiz-amocrm-inpage__title-prices"
                        style="font-size: 24px;font-weight: 600;text-align: center;margin-top: 30px;">
                     Предварительный расчет стоимости черновых работ:
                   </div>
 
-                  <div class="w-form-row cols_1 quiz-amocrm-inpage__prices" data-type="rough">
+                  <div class="quiz-amocrm-inpage__tips" data-type="rough">
+                    <div class="quiz-amocrm-inpage__tips-title">Для расчета недостаточно данных:</div>
+                    <div class="quiz-amocrm-inpage__tips-list">
+                      <a href="#qa-v3-b-1" class="quiz-amocrm-inpage__tips-item" data-type="rough">
+                        Выбрать черновые работы
+                        <svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M11 1L15 6L11 11M15 6H1" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                      </a>
+                      <a href="#qa-v3-b-2" class="quiz-amocrm-inpage__tips-item" data-type="height">
+                        Указать высоту потолка
+                        <svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M11 1L15 6L11 11M15 6H1" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                      </a>
+                      <a href="#qa-v3-b-2" class="quiz-amocrm-inpage__tips-item"  data-type="square">
+                        Указать площадь по полу
+                        <svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M11 1L15 6L11 11M15 6H1" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                      </a>
+                    </div>
+                  </div>
+
+                  <div class="w-form-row cols_1 quiz-amocrm-inpage__prices" style="display:none;" data-type="rough">
                     <div class="quiz-amocrm-form__price">
                       <span>0</span>
                       <span>Руб.</span>
@@ -138,8 +172,14 @@
                       <span>Руб. / м2</span>
                     </div>
                   </div>
+                  <!--Предварительный расчет стоимости черновых работ:-->
+
                 </div>
+                <div class="w-form-message"></div>
               </div>
+              <!-- Укажите площадь по полу Вашего объекта, м2 -->
+
+
               <div class="w-separator us_custom_532377d0 size_medium"></div>
             </div>
           </div>
@@ -186,7 +226,7 @@
                       <span>Укажите площадь с/у 1</span>
                     </div>
                     <div class="w-form-row-field">
-                      <input class="quiz-amocrm-inpage__m3" aria-label="Укажите площадь с/у 1" type="number" min="1"
+                      <input class="quiz-amocrm-inpage__m3" aria-label="Укажите площадь с/у 1" type="number" min="1" step="0.1"
                              name="floor_bathroom_1"/>
                     </div>
                   </div>
@@ -196,7 +236,7 @@
                     </div>
                     <div class="w-form-row-field">
                       <input class="quiz-amocrm-inpage__m3" aria-label="Укажите площадь с/у 2 (если есть)" type="number"
-                             min="1" name="floor_bathroom_2"/>
+                             min="1" step="0.1" name="floor_bathroom_2"/>
                     </div>
                   </div>
 
@@ -244,7 +284,31 @@
                     Предварительный расчет стоимости работ <br> "Ремонта Под Ключ":
                   </div>
 
-                  <div class="w-form-row cols_1 quiz-amocrm-inpage__prices" data-type="general">
+                  <div class="quiz-amocrm-inpage__tips" data-type="general">
+                    <div class="quiz-amocrm-inpage__tips-title">Для расчета недостаточно данных:</div>
+                    <div class="quiz-amocrm-inpage__tips-list">
+                      <a href="#qa-v3-b-1" class="quiz-amocrm-inpage__tips-item" data-type="rough">
+                        Выбрать черновые работы
+                        <svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M11 1L15 6L11 11M15 6H1" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                      </a>
+                      <a href="#qa-v3-b-2" class="quiz-amocrm-inpage__tips-item" data-type="height">
+                        Указать высоту потолка
+                        <svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M11 1L15 6L11 11M15 6H1" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                      </a>
+                      <a href="#qa-v3-b-2" class="quiz-amocrm-inpage__tips-item"  data-type="square">
+                        Указать площадь по полу
+                        <svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M11 1L15 6L11 11M15 6H1" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                      </a>
+                    </div>
+                  </div>
+
+                  <div class="w-form-row cols_1 quiz-amocrm-inpage__prices" style="display:none;" data-type="general">
                     <div class="quiz-amocrm-form__price">
                       <span>0</span>
                       <span>Руб.</span>
@@ -252,6 +316,21 @@
                     <div class="quiz-amocrm-form__price">
                       <span>0</span>
                       <span>Руб. / м2</span>
+                    </div>
+                  </div>
+
+                  <div class="w-form-row for_text has_label cols_1">
+                    <div class="w-form-row-label">
+                      <span>Выберите действующее спец.предложение:</span>
+                    </div>
+                    <div class="w-form-row-field">
+                      <select class="quiz-amocrm__input quiz-amocrm__select" name="special-offer" style="margin-top: 0;">
+                        <option value="null">Не выбрано</option>
+                        <option value="Скидка на ремонт 5%">Скидка на ремонт 5%</option>
+                        <option value="Проект ремонта в подарок">Проект ремонта в подарок</option>
+                        <option value="Инструкция в подарок">Инсталляция в подарок</option>
+                        <option value="Сплит система в подарок">Сплит система в подарок</option>
+                      </select>
                     </div>
                   </div>
 

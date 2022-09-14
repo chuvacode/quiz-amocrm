@@ -40,11 +40,11 @@
       $(this).toggleClass("variant-select--active");
 
       // Разблокируем кнопку далее, если больше 0
-      if (currentVariants.find(".variant-select--active").length > 0) {
+      /*if (currentVariants.find(".variant-select--active").length > 0) {
         btnNext.removeClass("quiz-amocrm__btn--disabled");
       } else {
         btnNext.addClass("quiz-amocrm__btn--disabled");
-      }
+      }*/
     });
 
     // Прогресс Бар
@@ -74,44 +74,48 @@
       let price = 0;
 
       // Высота потолка
-      let ceiling_height = parseFloat(QA_POPUP.find("input[name=ceiling_height]").val().trim());
+      let ceiling_height = parseFloat(QA_POPUP.find("[name=ceiling_height]").val().trim());
 
       // Площадь по полу
       let square = parseFloat(QA_POPUP.find("input[name=floor_area]").val().trim());
 
+      // Специальное предложение
+      let special_offer = QA_POPUP.find("[name=special-offer]").val();
+
       // Штукатурные работы
       let ratio_plaster = 0; // Кооэфициент штукатурных работ
+      // Определяем коэффициент
+      switch (true) {
+        case square >= 0 && square < 25:
+          ratio_plaster = 1.5;
+          break;
+        case square >= 25 && square < 30:
+          ratio_plaster = 1.45;
+          break;
+        case square >= 30 && square < 35:
+          ratio_plaster = 1.4;
+          break;
+        case square >= 35 && square < 40:
+          ratio_plaster = 1.35;
+          break;
+        case square >= 40 && square < 45:
+          ratio_plaster = 1.3;
+          break;
+        case square >= 45 && square < 50:
+          ratio_plaster = 1.25;
+          break;
+        case square >= 50 && square < 55:
+          ratio_plaster = 1.2;
+          break;
+        case square >= 55 && square < 60:
+          ratio_plaster = 1.15;
+          break;
+        case square >= 60:
+          ratio_plaster = 1.1;
+          break;
+      }
       if (QA_POPUP.find(".quiz-amocrm__state[data-state=1] .variant-select:nth-child(1)").hasClass("variant-select--active")) {
-        // Определяем коэффициент
-        switch (true) {
-          case square >= 0 && square < 25:
-            ratio_plaster = 1.5;
-            break;
-          case square >= 25 && square < 30:
-            ratio_plaster = 1.45;
-            break;
-          case square >= 30 && square < 35:
-            ratio_plaster = 1.4;
-            break;
-          case square >= 35 && square < 40:
-            ratio_plaster = 1.35;
-            break;
-          case square >= 40 && square < 45:
-            ratio_plaster = 1.3;
-            break;
-          case square >= 45 && square < 50:
-            ratio_plaster = 1.25;
-            break;
-          case square >= 50 && square < 55:
-            ratio_plaster = 1.2;
-            break;
-          case square >= 55 && square < 60:
-            ratio_plaster = 1.15;
-            break;
-          case square >= 60:
-            ratio_plaster = 1.1;
-            break;
-        }
+
 
         buffer = square * ceiling_height * ratio_plaster * 350;
         rough_work += buffer;
@@ -125,45 +129,43 @@
 
       // Трасса под сплит-систему
       let ratio_split = 0;
+      // Определяем коэффициент
+      switch (true) {
+        case square >= 0 && square < 25:
+          ratio_split = 1;
+          break;
+        case square >= 25 && square < 30:
+          ratio_split = 1;
+          break;
+        case square >= 30 && square < 35:
+          ratio_split = 1;
+          break;
+        case square >= 35 && square < 40:
+          ratio_split = 1;
+          break;
+        case square >= 40 && square < 45:
+          ratio_split = 1;
+          break;
+        case square >= 45 && square < 50:
+          ratio_split = 2;
+          break;
+        case square >= 50 && square < 55:
+          ratio_split = 2;
+          break;
+        case square >= 55 && square < 60:
+          ratio_split = 2;
+          break;
+        case square >= 60 && square < 65:
+          ratio_split = 2;
+          break;
+        case square >= 65 && square < 70:
+          ratio_split = 3;
+          break;
+        case square >= 70:
+          ratio_split = 3;
+          break;
+      }
       if (QA_POPUP.find(".quiz-amocrm__state[data-state=1] .variant-select:nth-child(3)").hasClass("variant-select--active")) {
-
-        // Определяем коэффициент
-        switch (true) {
-          case square >= 0 && square < 25:
-            ratio_split = 1;
-            break;
-          case square >= 25 && square < 30:
-            ratio_split = 1;
-            break;
-          case square >= 30 && square < 35:
-            ratio_split = 1;
-            break;
-          case square >= 35 && square < 40:
-            ratio_split = 1;
-            break;
-          case square >= 40 && square < 45:
-            ratio_split = 1;
-            break;
-          case square >= 45 && square < 50:
-            ratio_split = 2;
-            break;
-          case square >= 50 && square < 55:
-            ratio_split = 2;
-            break;
-          case square >= 55 && square < 60:
-            ratio_split = 2;
-            break;
-          case square >= 60 && square < 65:
-            ratio_split = 2;
-            break;
-          case square >= 65 && square < 70:
-            ratio_split = 3;
-            break;
-          case square >= 70:
-            ratio_split = 3;
-            break;
-        }
-
         buffer = ratio_split * 8000;
         rough_work += buffer;
       }
@@ -256,6 +258,7 @@
 
     // Обработка состояний формы
     function handlerState(state) {
+      currentState = state;
       QA_POPUP.find(".quiz-amocrm__state--active").removeClass("quiz-amocrm__state--active");
       QA_POPUP.find(".quiz-amocrm__state[data-state=" + state + "]").addClass("quiz-amocrm__state--active");
       btnNext.show();
@@ -291,8 +294,10 @@
 
     // Открытие попапа с формой
     $(".popup-quiz-btn-v3").on("click", function () {
-      currentState = 1;
-      handlerState(currentState);
+      if (currentState !== 7 && currentState !== 8 && currentState !== 9) {
+        currentState = 1;
+        handlerState(currentState);
+      }
       setTimeout(function () {
         $('.w-popup-wrap').css("top", "0");
         $('.w-popup-wrap').removeClass("pos_absolute");
@@ -359,7 +364,7 @@
         });
 
         let celling_height = [];
-        celling_height.push(QA_POPUP.find("input[name=ceiling_height]").val().trim());
+        celling_height.push(QA_POPUP.find("[name=ceiling_height]").val().trim());
 
         let floor_area = [];
         floor_area.push(QA_POPUP.find("input[name=floor_area]").val().trim());
@@ -372,6 +377,9 @@
 
         let layout = [];
         layout.push(QA_POPUP.find("select[name=layout] option:selected").text());
+
+        let special_offer = [];
+        special_offer.push(QA_POPUP.find("[name=special-offer] option:selected").val());
 
         let data = {
           "quiz": [
@@ -398,6 +406,10 @@
             {
               "title": "Укажите планировку вашего объекта:",
               "value": layout
+            },
+            {
+              "title": "Выбранное специальное предложение:",
+              "value": special_offer
             }
           ],
           "firstname": firstname,
